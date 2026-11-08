@@ -1,0 +1,2 @@
+# CRC OpenShift ArgoCD
+
