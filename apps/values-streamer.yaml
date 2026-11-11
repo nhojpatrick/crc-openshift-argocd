@@ -1,0 +1,7 @@
+# Streamer Values
+
+argocd:
+  namespace: openshift-gitops
+
+namespaces:
+  - streamer-sit
