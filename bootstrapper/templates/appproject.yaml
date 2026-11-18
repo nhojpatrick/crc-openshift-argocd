@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  labels: {{- include "deployment.labels" . | nindent 4 }}
+  name: {{ include "deployment.name" . }}
+  namespace: {{ .Values.argocd.namespace }}
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - namespace: {{ .Values.argocd.namespace }}
+      server: '*'
+  sourceRepos:
+    - '*'

@@ -1,0 +1,11 @@
+# Local Values
+
+argocd:
+  namespace: openshift-gitops
+
+bootstrapper:
+  env: local
+  git:
+    commit: main
+    path: bootstrapper
+    url: https://github.com/nhojpatrick/crc-openshift-argocd.git
