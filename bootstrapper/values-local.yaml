@@ -1,7 +1,17 @@
 # Local Values
 
+apps:
+  - name: streamer
+    git:
+      commit: main
+      url: https://github.com/nhojpatrick/crc-openshift-argocd.git
+    helm:
+      path: apps
+      valueFile: values-streamer.yaml
+
 argocd:
   namespace: openshift-gitops
+  project: bootstrapper
 
 bootstrapper:
   env: local
@@ -9,3 +19,7 @@ bootstrapper:
     commit: main
     path: bootstrapper
     url: https://github.com/nhojpatrick/crc-openshift-argocd.git
+
+destination:
+  namespace: openshift-gitops
+  server: 'https://kubernetes.default.svc'

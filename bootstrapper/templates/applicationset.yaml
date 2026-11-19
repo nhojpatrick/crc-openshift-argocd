@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  labels: {{- include "deployment.labels" . | nindent 4 }}
+  name: {{ include "deployment.name" . }}
+  namespace: {{ .Values.argocd.namespace }}
+spec:
+  generators:
+    - list:
+        elements: {{ toYaml .Values.apps | nindent 10 }}
+  goTemplate: true
+  goTemplateOptions:
+    - "missingkey=error"
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/hydrate: normal
+      name: '{{`{{ .name }}`}}'
+      namespace: {{ .Values.argocd.namespace }}
+    spec:
+      destination:
+        namespace: '{{ .Values.destination.namespace }}'
+        server: '{{ .Values.destination.server }}'
+      project: '{{ .Values.argocd.project }}'
+      source:
+        helm:
+          valueFiles:
+            - values.yaml
+            - '{{`{{ .helm.valueFile }}`}}'
+        path: '{{`{{ .helm.path }}`}}'
+        repoURL: '{{`{{ .git.url }}`}}'
+        targetRevision: '{{`{{ .git.commit }}`}}'
+      syncPolicy:
+        automated:
+          enabled: true
+          prune: true
+          selfHeal: true
